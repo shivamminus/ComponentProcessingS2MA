@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.componentxProcessing.main.client.PaymentClient;
+import com.componentxProcessing.main.dto.PaymentDetailDTO;
 
 @Service
 public class PaymentService {
@@ -11,7 +12,7 @@ public class PaymentService {
 	@Autowired
 	private PaymentClient paymentClient;
 	
-	public String messageConfirmation(String requestId, Integer creditCardNumber, Integer creditLimit,
+	public String messageConfirmation(String requestId, String creditCardNumber, Integer creditLimit,
 			Integer processingCharge, String token) {
 		System.out.println("Inside Service");
 		double check = (paymentClient.paymentDetails(requestId, creditCardNumber, creditLimit, processingCharge, token))

@@ -11,7 +11,7 @@ import feign.Headers;
 
 
 @Headers("Content-Type: application/json")
-@FeignClient(name="pack-feign",url = "localhost:8083/packaging") 
+@FeignClient(name="PACKAGE-SERVICE",url = "http://localhost:9090/packagedelivery") 
 public interface PackagingClient {
 	
 	@PostMapping("/getPackagingDeliveryCharge/{type}/{count}")

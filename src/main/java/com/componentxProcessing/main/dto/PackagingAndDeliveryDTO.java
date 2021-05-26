@@ -1,8 +1,5 @@
 package com.componentxProcessing.main.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class PackagingAndDeliveryDTO {
 
 	private Double charge;
