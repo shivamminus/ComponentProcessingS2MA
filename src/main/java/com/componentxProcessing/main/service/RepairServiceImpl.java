@@ -47,7 +47,7 @@ public class RepairServiceImpl implements ProcessRequestService{
         }
         System.out.println("After Priority Check");
         System.out.println("Utilities.getAlphaNumericString(16)"+Utilities.getAlphaNumericString(16));
-        processResponseObj.setRequestId(Utilities.getAlphaNumericString(16));
+        processResponseObj.setRequestId(Utilities.generateRequestId());
         processRequestRepo.save(processRequestObj);
         
         processResponseObj.setPackagingAndDeliveryCharge(packagingClient.save(processRequestObj.getComponentType(), processRequestObj.getQuantity(),token).getCharge());
@@ -55,27 +55,5 @@ public class RepairServiceImpl implements ProcessRequestService{
    
         return processResponseObj;
     }
-   @Override
-    public String generateRequestId(){
-
-        return UUID.randomUUID().toString();
-        
-    }
-
-	@Override
-	public String messageConfirmation( String requestId, Integer creditCardNumber, Integer creditLimit,
-			Integer processingCharge,String token) {
-		System.out.println("Inside Service");
-		double check = (paymentClient.paymentDetails(requestId,creditCardNumber, creditLimit, processingCharge,token)).getCharge().doubleValue();
-	
-    	 if((int)check>0) {
-      	   
-      	   System.out.println("Successful Operation Message displayed");
-      	   return "Operation Successful";
-         }
-         else {
-      	   return "Operation Not Successful";
-         }
-	}
     
 }

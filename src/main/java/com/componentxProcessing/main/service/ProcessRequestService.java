@@ -9,9 +9,4 @@ import com.componentxProcessing.main.model.ProcessResponse;
 public interface ProcessRequestService {
 
 	public ProcessResponse processService(ProcessRequest processRequestObj, String token);
-
-	public String messageConfirmation(String requestId, Integer creditCardNumber, Integer creditLimit,
-			Integer processingCharge, String token);
-
-	public String generateRequestId();
 }

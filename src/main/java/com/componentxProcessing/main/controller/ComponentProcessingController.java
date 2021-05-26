@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,11 @@ import com.componentxProcessing.main.exceptions.ComponentTyepNotFoundException;
 import com.componentxProcessing.main.exceptions.InvalidTokenException;
 import com.componentxProcessing.main.model.ProcessRequest;
 import com.componentxProcessing.main.model.ProcessResponse;
+import com.componentxProcessing.main.service.PaymentService;
 import com.componentxProcessing.main.service.RepairServiceImpl;
 import com.componentxProcessing.main.service.ReplacementServiceImpl;
 
 import feign.FeignException;
-
 
 @RestController
 public class ComponentProcessingController {
@@ -35,21 +36,18 @@ public class ComponentProcessingController {
 	private ProcessResponse processResponseObj;
 	@Autowired
 	private AuthClient authClient;
+	
+	@Autowired
+	private PaymentService paymentService;
 
 	@PostMapping(path = "/ProcessDetail", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProcessResponse> processResponseDetails(@RequestBody ProcessRequest processRequestObj,
 			@RequestHeader(name = "Authorization", required = true) String token) throws InvalidTokenException {
 
 		System.out.println(token);
-		try {
-			if (!authClient.getsValidity(token).isValidStatus()) {
+		if (!authClient.getsValidity(token).isValidStatus()) {
 
-				throw new InvalidTokenException("Token is either expired or invalid...");
-			}
-
-		} catch (FeignException e) {
 			throw new InvalidTokenException("Token is either expired or invalid...");
-
 		}
 
 		System.out.println("Checking if component is Integral or Accessory - BEGINS");
@@ -82,23 +80,18 @@ public class ComponentProcessingController {
 			@RequestHeader(name = "Authorization", required = true) String token) throws InvalidTokenException {
 
 		System.out.println(token);
-		try {
-			if (!authClient.getsValidity(token).isValidStatus()) {
 
-				throw new InvalidTokenException("Token is either expired or invalid...");
-			}
+		if (!authClient.getsValidity(token).isValidStatus()) {
 
-		} catch (FeignException e) {
 			throw new InvalidTokenException("Token is either expired or invalid...");
-
 		}
 		System.out.println("Controller Component");
 		try {
-			return new ResponseEntity<>(new PaymentStatusDTO(replacementServiceImplObj.messageConfirmation(requestId,
+			return new ResponseEntity<>(new PaymentStatusDTO(paymentService.messageConfirmation(requestId,
 					creditCardNumber, creditLimit, processingCharge, token)), HttpStatus.OK);
 
 		} catch (Exception e) {
-			return new ResponseEntity<>(new PaymentStatusDTO(replacementServiceImplObj.messageConfirmation(requestId,
+			return new ResponseEntity<>(new PaymentStatusDTO(paymentService.messageConfirmation(requestId,
 					creditCardNumber, creditLimit, processingCharge, token)), HttpStatus.FORBIDDEN);
 		}
 

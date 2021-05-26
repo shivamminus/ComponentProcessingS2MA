@@ -26,25 +26,23 @@ public class ReplacementServiceImpl implements ProcessRequestService {
 	@Autowired
 	private PackagingClient packagingClient;
 
-	@Autowired
-	private PaymentClient paymentClient;
-
 	@Override
 	public ProcessResponse processService(ProcessRequest processRequestObj, String token) {
 
 		System.out.println("hi im here " + processRequestObj.toString());
+		String strDate;
 		if (processRequestObj.getIsPriorityRequest()) {
-
-			String strDate = LocalDateTime.now().plusDays(2).toString();
-			processResponseObj.setDateOfDelivery(strDate);
+			
+			strDate = LocalDateTime.now().plusDays(2).toString();
+			
 		} else {
 
-			String strDate = LocalDateTime.now().plusDays(5).toString();
-			processResponseObj.setDateOfDelivery(strDate);
+			strDate = LocalDateTime.now().plusDays(5).toString();
 		}
+		processResponseObj.setDateOfDelivery(strDate);
 		processResponseObj.setProcessingCharge(300);
-		
-		processResponseObj.setRequestId(Utilities.getAlphaNumericString(16));
+
+		processResponseObj.setRequestId(Utilities.generateRequestId());
 		processRequestRepo.save(processRequestObj);
 
 		processResponseObj.setPackagingAndDeliveryCharge(packagingClient
@@ -52,28 +50,6 @@ public class ReplacementServiceImpl implements ProcessRequestService {
 		processResponseRepo.save(processResponseObj);
 
 		return processResponseObj;
-	}
-
-	@Override
-	public String messageConfirmation(String requestId, Integer creditCardNumber, Integer creditLimit,
-			Integer processingCharge, String token) {
-		System.out.println("Inside Service");
-		double check = (paymentClient.paymentDetails(requestId, creditCardNumber, creditLimit, processingCharge, token))
-				.getCharge().doubleValue();
-
-		if ((int) check > 0) {
-
-			System.out.println("Successful Operation Message displayed");
-			return "Operation Successful";
-		} else {
-			return "Operation Not Successful";
-		}
-	}
-
-	public String generateRequestId() {
-
-		return UUID.randomUUID().toString();
-
 	}
 
 }
