@@ -10,6 +10,9 @@ import com.componentxProcessing.main.dto.PackagingAndDeliveryDTO;
 import feign.Headers;
 
 
+/*
+ * Calling Packaging Delivery service for calculating charge
+*/
 @Headers("Content-Type: application/json")
 @FeignClient(name="PACKAGE-SERVICE",url = "http://localhost:9090/packagedelivery") 
 public interface PackagingClient {

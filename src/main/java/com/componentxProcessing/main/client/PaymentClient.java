@@ -9,6 +9,10 @@ import com.componentxProcessing.main.dto.PackagingAndDeliveryDTO;
 
 import feign.Headers;
 
+
+/*
+ * Call Payment Service to initiate charge from user
+*/
 @Headers("Content-Type: application/json")
 @FeignClient(name = "payment-service", url = "localhost:9090/payment")
 public interface PaymentClient {

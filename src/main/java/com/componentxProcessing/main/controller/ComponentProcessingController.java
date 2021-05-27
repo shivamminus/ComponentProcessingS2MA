@@ -25,6 +25,10 @@ import com.componentxProcessing.main.service.ReplacementServiceImpl;
 
 import feign.FeignException;
 
+
+/*
+ * component service controller
+*/
 @RestController
 @RequestMapping(value="/componentservice")
 public class ComponentProcessingController {
@@ -41,6 +45,9 @@ public class ComponentProcessingController {
 	@Autowired
 	private PaymentService paymentService;
 
+	/*
+	 * API: /processDetail -> Process Response Obj based on request
+	*/
 	@PostMapping(path = "/ProcessDetail", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ProcessResponse> processResponseDetails(@RequestBody ProcessRequest processRequestObj,
 			@RequestHeader(name = "Authorization", required = true) String token) throws InvalidTokenException {
@@ -73,7 +80,11 @@ public class ComponentProcessingController {
 		return new ResponseEntity<>(processResponseObj, HttpStatus.OK);
 
 	}
-
+	
+	
+	/*
+	 * API: /completeProcessing -> 
+	*/
 	@PostMapping(path = "/completeProcessing/{requestId}/{creditCardNumber}/{creditLimit}/{processingCharge}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PaymentStatusDTO> messageConfirmation(@PathVariable String requestId,
 			@PathVariable String creditCardNumber, @PathVariable Integer creditLimit,
