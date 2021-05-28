@@ -13,8 +13,17 @@ import com.componentxProcessing.main.model.ErrorMessage;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-	@ExceptionHandler(value = { ComponentTyepNotFoundException.class, InvalidTokenException.class,  Exception.class })
+	@ExceptionHandler(value = { ComponentTyepNotFoundException.class, InvalidTokenException.class})
 	public ResponseEntity<ErrorMessage> resourceNotFoundException(Exception ex, WebRequest request) {
+		final Date date = new Date();
+		ErrorMessage message = new ErrorMessage(500, date, ex.getMessage());
+
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	@ExceptionHandler(value = {SomethingWentWrongException.class,  Exception.class })
+	public ResponseEntity<ErrorMessage> somethingWentWrong(Exception ex, WebRequest request) {
 		final Date date = new Date();
 		ErrorMessage message = new ErrorMessage(500, date, ex.getMessage());
 
