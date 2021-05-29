@@ -2,6 +2,8 @@ package com.componentxProcessing.main.service;
 
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import com.componentxProcessing.main.util.Utilities;
 
 @Service
 public class RepairServiceImpl implements ProcessRequestService {
+	private static Logger logger = LoggerFactory.getLogger(ReplacementServiceImpl.class);
 
 	@Autowired
 	private ProcessResponse processResponseObj;
@@ -28,25 +31,34 @@ public class RepairServiceImpl implements ProcessRequestService {
 	@Autowired
 	private PaymentClient paymentClient;
 
+	/*
+	 * This function will return process response
+	 * 
+	 * @header String token
+	 * 
+	 * @params ProcessRequestObj processRequestObj
+	 * 
+	 * @return ProcessResponse
+	 */
 	@Override
 	public ProcessResponse processService(ProcessRequest processRequestObj, String token)
 			throws SomethingWentWrongException {
-		System.out.println("Before Priority Check");
+		logger.info("Before Priority Check");
 		if (processRequestObj.getIsPriorityRequest()) {
-			System.out.println("Priority True");
+			logger.info("Priority True");
 			processResponseObj.setProcessingCharge(700);
-			System.out.println("Priority True23");
+			logger.info("Priority True23");
 			String strDate = LocalDateTime.now().plusDays(2).toString();
-			System.out.println(strDate);
+			logger.info(strDate);
 			processResponseObj.setDateOfDelivery(strDate);
 		} else {
-			System.out.println("Priority False");
+			logger.info("Priority False");
 			processResponseObj.setProcessingCharge(500);
 			String strDate = LocalDateTime.now().plusDays(2).toString();
 			processResponseObj.setDateOfDelivery(strDate);
 		}
-		System.out.println("After Priority Check");
-		System.out.println("Utilities.getAlphaNumericString(16)" + Utilities.getAlphaNumericString(16));
+		logger.info("After Priority Check");
+		logger.info("Utilities.getAlphaNumericString(16)" + Utilities.getAlphaNumericString(16));
 		processResponseObj.setRequestId(Utilities.generateRequestId());
 		processRequestRepo.save(processRequestObj);
 

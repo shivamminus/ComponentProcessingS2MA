@@ -26,12 +26,14 @@ public class Utilities {
 		}
 		return r.toString();
 	}
-	
+
+	/*
+	 * It will return random id from UUID library
+	 */
 	public static String generateRequestId() {
 
 		return UUID.randomUUID().toString();
 
 	}
-
 
 }
