@@ -12,7 +12,8 @@ import com.componentxProcessing.main.dto.PackagingAndDeliveryDTO;
  * Calling Packaging Delivery service for calculating charge
 */
 //@Headers("Content-Type: application/json")
-@FeignClient(name="PACKAGE-SERVICE",url = "http://localhost:9090/packagedelivery") 
+//@FeignClient(name="PACKAGE-SERVICE",url = "http://localhost:9090/packagedelivery") 
+@FeignClient(name="PACKAGE-SERVICE",url = "http://localhost:8083/packagedelivery")
 public interface PackagingClient {
 	
 	@PostMapping("/getPackagingDeliveryCharge/{type}/{count}")

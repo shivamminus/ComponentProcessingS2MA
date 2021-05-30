@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.componentxProcessing.main.dto.PackagingAndDeliveryDTO;
+import com.componentxProcessing.main.dto.PaymentChargeDTO;
 
 import feign.Headers;
 
@@ -14,7 +15,9 @@ import feign.Headers;
  * Call Payment Service to initiate charge from user
 */
 @Headers("Content-Type: application/json")
-@FeignClient(name = "payment-service", url = "localhost:9090/payment")
+//@FeignClient(name = "payment-service", url = "localhost:8082/payment")
+@FeignClient(name = "payment-service", url = "localhost:8082/payment")
+
 public interface PaymentClient {
 
 	@GetMapping("/processpayment")
